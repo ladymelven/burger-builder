@@ -1,0 +1,16 @@
+.checkoutContainer {
+  box-sizing: border-box;
+  padding: 15px 0;
+  margin: 10px auto;
+  max-width: 400px;
+  background-color: #f7d794;
+  border-radius: 5px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.priceTag {
+  color: #303952;
+  font-size: 1.2rem;
+  font-weight: 700;
+}

@@ -1,0 +1,18 @@
+.controlsContainer {
+  box-sizing: border-box;
+  padding: 20px 0;
+  margin: 10px auto;
+  max-width: 700px;
+  background-color: #f3a683;
+  border-radius: 5px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.controlsHeading {
+  width: 100%;
+  text-align: center;
+  color: #303952;
+}

@@ -1,0 +1,103 @@
+.Button {
+  box-sizing: border-box;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.Button:focus {
+  outline: none;
+  border: 1px solid #e15f41;
+}
+
+.ctrlBtn {
+  background-color: #e15f41;
+  display: block;
+  width: 25px;
+  height: 25px;
+  box-shadow: inset 2px 2px #e77f67;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 700;
+}
+
+.ctrlBtn:not(:last-child) {
+  margin-right: 20px;
+}
+
+.ctrlBtn:hover {
+  background-color: #e77f67;
+}
+
+.ctrlBtn:active {
+  box-shadow: inset 1px 1px #e77f67;
+}
+
+.ctrlBtn:disabled {
+  background-color: grey;
+  box-shadow: inset 2px 2px lightgrey;
+  cursor: default;
+}
+
+.orderBtn {
+  background-color: #f19066;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  display: inline-block;
+  border-radius: 5px;
+  box-shadow: inset 4px 4px #f3a683;
+  padding: 7px 14px;
+}
+
+.orderBtn:active {
+  box-shadow: inset 4px 4px #e15f41;
+  background-color: #e77f67;
+}
+
+.checkoutBtn {
+  padding: 10px;
+  background-color: #e77f67;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 5px;
+  box-shadow: inset 2px 2px #f3a683;
+  margin-right: 10px;
+}
+
+.checkoutBtn:active {
+  background-color: #e77f67;
+  box-shadow: inset 2px 2px #e15f41;
+}
+
+.cancelBtn {
+  background-color: transparent;
+  border: 1px solid #303952;
+  box-shadow: inset -2px -2px #596275;
+  color: #303952;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: capitalize;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.cancelBtn:active {
+  box-shadow: none;
+}
+
+.submitBtn {
+  background-color: #303952;
+  box-shadow: inset 2px 2px #596275;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.cancelBtn:active {
+  box-shadow: none;
+}

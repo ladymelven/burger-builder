@@ -1,0 +1,22 @@
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0 0;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media only screen and (min-width: 600px) {
+  .navList {
+    margin: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: inherit;
+    width: auto;
+  }
+}

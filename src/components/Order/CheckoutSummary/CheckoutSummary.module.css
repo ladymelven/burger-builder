@@ -1,0 +1,20 @@
+.checkoutSummary {
+  width: 90vw;
+  margin: 10px auto;
+  text-align: center;
+}
+
+.sumHeading {
+  color: #303952;
+  margin: 0;
+}
+
+.sumPrice {
+  color: #303952;
+}
+
+@media only screen and (min-width: 768px) {
+  .checkoutSummary {
+    width: 500px;
+  }
+}

@@ -1,0 +1,39 @@
+.navItem {
+  display: block;
+  padding: 10px;
+  border-bottom: 1px solid grey;
+  width: 60%;
+  text-align: center;
+}
+
+.navLink {
+  color: #303952;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+}
+
+.navLink:hover,
+.navLink:active {
+  border-bottom: 2px solid #303952;
+}
+
+@media only screen and (min-width: 600px) {
+  .navItem {
+    border-radius: 5px;
+    border-bottom: none;
+    width: auto;
+  }
+
+  .navItem:not(:last-of-type) {
+    margin-right: 5px;
+  }
+
+  .navLink {
+    color: #fff;
+  }
+
+  .navLink:hover,
+  .navLink:active {
+    border-bottom: 2px solid #3dc1d3;
+  }
+}

@@ -1,0 +1,18 @@
+.orderContainer {
+  max-width: 400px;
+  margin: 15px auto;
+  padding: 20px;
+  background-color: #f7d794;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  color: #303952;
+}
+
+.orderDate {
+  margin: 0;
+}
+
+.orderPrice {
+  font-weight: 700;
+}

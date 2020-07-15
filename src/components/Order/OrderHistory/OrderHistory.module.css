@@ -1,0 +1,11 @@
+.histContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.histHeading {
+  color: #303952;
+  text-align: center;
+  margin: 10px auto;
+}
