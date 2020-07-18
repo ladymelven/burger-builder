@@ -3,8 +3,10 @@ import React from "react";
 import Form from "../../Form/Form";
 import Spinner from "../../UI/Spinner/Spinner";
 import isValidPhone from "../../../utilities/Validation/isValidPhone/isValidPhone";
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import axOrder from "../../../ajax/axios-orders";
+
+import { connect } from "react-redux";
 
 class DeliveryForm extends React.Component {
 	state = {
@@ -20,16 +22,16 @@ class DeliveryForm extends React.Component {
 	};
 
 	changeHandler = event => {
-		const formData = {...this.state};
+		const formData = { ...this.state };
 		formData[event.target.name] = event.target.value.toString(10);
-		this.setState({...formData});
+		this.setState({ ...formData });
 		if (event.target.name === "phone") {
 			if (isValidPhone(event.target.value)) {
 				this.formConfig[1].config.valid = true;
-				this.setState({formIsValid: true});
+				this.setState({ formIsValid: true });
 			} else {
 				this.formConfig[1].config.valid = false;
-				this.setState({formIsValid: false});
+				this.setState({ formIsValid: false });
 			}
 		}
 	};
@@ -39,7 +41,7 @@ class DeliveryForm extends React.Component {
 		if (!this.state.formIsValid) {
 			return;
 		}
-		this.setState({loading: true});
+		this.setState({ loading: true });
 		const order = {
 			ingredients: this.props.ingredients,
 			price: this.props.price,
@@ -114,7 +116,7 @@ class DeliveryForm extends React.Component {
 				placeholder: "Apartment/office"
 			}
 		},
-		{name: "comment", type: "textarea", label: "Comments", config: {}}
+		{ name: "comment", type: "textarea", label: "Comments", config: {} }
 	];
 
 	render() {
@@ -133,4 +135,11 @@ class DeliveryForm extends React.Component {
 	}
 }
 
-export default withRouter(DeliveryForm);
+const mapStateToProps = state => {
+	return {
+		ingredients: state.ingredients,
+		price: state.price
+	};
+};
+
+export default connect(mapStateToProps)(withRouter(DeliveryForm));

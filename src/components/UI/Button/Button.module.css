@@ -9,6 +9,11 @@
   border: 1px solid #e15f41;
 }
 
+.Button::selection {
+  background-color: inherit;
+  color: inherit;
+}
+
 .ctrlBtn {
   background-color: #e15f41;
   display: block;
