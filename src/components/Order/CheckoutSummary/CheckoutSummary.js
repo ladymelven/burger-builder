@@ -4,6 +4,8 @@ import styles from "./CheckoutSummary.module.css";
 import BurgerPreview from "../../Burger/BurgerPreview/BurgerPreview";
 import Button from "../../UI/Button/Button";
 
+import { connect } from "react-redux";
+
 const orderSummary = props => {
 	return (
 		<div className={styles.checkoutSummary}>
@@ -25,4 +27,11 @@ const orderSummary = props => {
 	);
 };
 
-export default orderSummary;
+const mapStateToProps = state => {
+	return {
+		ingredients: state.ingredients,
+		price: state.price
+	};
+};
+
+export default connect(mapStateToProps)(orderSummary);
