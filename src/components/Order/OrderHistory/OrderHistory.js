@@ -3,25 +3,25 @@ import React from "react";
 import styles from "./OrderHistory.module.css";
 import PrevOrder from "../PrevOrder/PrevOrder";
 import Spinner from "../../UI/Spinner/Spinner";
+import Modal from "../../../utilities/Modal/Modal";
 // import withErrorHandling from "../../../utilities/withErrorHandling/withErrorHandling";
 
-import axOrder from "../../../ajax/axios-orders";
+import { connect } from "react-redux";
+import { fetchOrders } from "../../../store/actions/order";
 
 class OrderHistory extends React.Component {
-	state = {orders: null};
-
 	componentDidMount() {
-		axOrder.get("/orders.json").then(response => {
-			this.setState({orders: response.data});
-		});
+		this.props.onFetchOrders();
 	}
 
 	render() {
-		let orders = <Spinner />;
-		if (this.state.orders) {
-			const keys = Object.keys(this.state.orders);
+		let orders;
+		if (this.props.loading) {
+			orders = <Spinner />;
+		} else if (this.props.orders) {
+			const keys = Object.keys(this.props.orders);
 			orders = keys.map(key => {
-				const order = this.state.orders[key];
+				const order = this.props.orders[key];
 				const address = `${order.customer.address.street}, ${order.customer.address.houseNo}, apartment ${order.customer.address.apartment} `;
 				return (
 					<PrevOrder
@@ -35,7 +35,14 @@ class OrderHistory extends React.Component {
 					/>
 				);
 			});
+		} else if (this.props.error) {
+			orders = (
+				<Modal show={this.props.error}>
+					Failed to fetch orders. Please check your network connection.
+				</Modal>
+			);
 		}
+
 		return (
 			<React.Fragment>
 				<h1 className={styles.histHeading}>Your previous orders</h1>
@@ -45,5 +52,19 @@ class OrderHistory extends React.Component {
 	}
 }
 
+const mapStateToProps = state => {
+	return {
+		orders: state.order.orders,
+		loading: state.order.loading,
+		error: state.order.hasError
+	};
+};
+
+const mapDispatchToProps = dispatch => {
+	return {
+		onFetchOrders: () => dispatch(fetchOrders())
+	};
+};
+
 // export default withErrorHandling(OrderHistory); //gotta fix those interceptors
-export default OrderHistory;
+export default connect(mapStateToProps, mapDispatchToProps)(OrderHistory);

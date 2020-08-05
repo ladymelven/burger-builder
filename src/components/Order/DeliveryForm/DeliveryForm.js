@@ -4,7 +4,7 @@ import Form from "../../Form/Form";
 import Spinner from "../../UI/Spinner/Spinner";
 import isValidPhone from "../../../utilities/Validation/isValidPhone/isValidPhone";
 import { withRouter } from "react-router-dom";
-import axOrder from "../../../ajax/axios-orders";
+import { attemptPurchase } from "../../../store/actions/order";
 
 import { connect } from "react-redux";
 
@@ -17,8 +17,7 @@ class DeliveryForm extends React.Component {
 		phone: 0,
 		delivery: "",
 		comment: "",
-		formIsValid: true,
-		loading: false
+		formIsValid: true
 	};
 
 	changeHandler = event => {
@@ -41,7 +40,7 @@ class DeliveryForm extends React.Component {
 		if (!this.state.formIsValid) {
 			return;
 		}
-		this.setState({ loading: true });
+
 		const order = {
 			ingredients: this.props.ingredients,
 			price: this.props.price,
@@ -57,10 +56,8 @@ class DeliveryForm extends React.Component {
 			deliveryTime: this.state.delivery,
 			comments: this.state.comment
 		};
-		axOrder.post("/orders.json", order).then(response => {
-			console.log(response);
-			this.props.history.push("/history");
-		});
+
+		this.props.onPurchase(order);
 	};
 
 	formConfig = [
@@ -120,7 +117,7 @@ class DeliveryForm extends React.Component {
 	];
 
 	render() {
-		return this.state.loading ? (
+		return this.props.loading ? (
 			<Spinner />
 		) : (
 			<Form
@@ -137,9 +134,19 @@ class DeliveryForm extends React.Component {
 
 const mapStateToProps = state => {
 	return {
-		ingredients: state.ingredients,
-		price: state.price
+		ingredients: state.burger.ingredients,
+		price: state.burger.price,
+		loading: state.order.loading
 	};
 };
 
-export default connect(mapStateToProps)(withRouter(DeliveryForm));
+const mapDispatchToProps = dispatch => {
+	return {
+		onPurchase: order => dispatch(attemptPurchase(order))
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(DeliveryForm));
