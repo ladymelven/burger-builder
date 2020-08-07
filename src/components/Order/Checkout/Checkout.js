@@ -2,6 +2,8 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import styles from "./Checkout.module.css";
 
+import Modal from "../../../utilities/Modal/Modal";
+
 import CheckoutSummary from "../CheckoutSummary/CheckoutSummary";
 import DeliveryForm from "../DeliveryForm/DeliveryForm";
 
@@ -16,7 +18,7 @@ const Checkout = props => {
 		props.history.replace("/build");
 	};
 
-	return props.ingredients ? (
+	let checkoutEl = (
 		<div className={styles.Checkout}>
 			<CheckoutSummary
 				clickedCancel={cancelHandler}
@@ -24,14 +26,25 @@ const Checkout = props => {
 			/>
 			<Route path={props.match.url + "/delivery"} component={DeliveryForm} />
 		</div>
-	) : (
-		<Redirect to="/build" /> //redirect unless user came from Builder page
 	);
+
+	if (props.error) {
+		checkoutEl = <Modal show={props.error}>Failed to send order</Modal>;
+	}
+
+	if (props.orderSent) {
+		checkoutEl = <Redirect to="/history" />;
+	}
+
+	return props.ingredients ? checkoutEl : <Redirect to="/build" />;
+	//redirect to main unless user came from Builder page
 };
 
 const mapStateToProps = state => {
 	return {
-		ingredients: state.ingredients
+		ingredients: state.burger.ingredients,
+		error: state.order.error,
+		orderSent: state.order.orderSent
 	};
 };
 

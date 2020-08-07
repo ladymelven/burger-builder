@@ -1,7 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import axOrder from "../../ajax/axios-orders";
-import axios from "axios";
 
 import BurgerPreview from "../../components/Burger/BurgerPreview/BurgerPreview";
 import Controls from "../../components/Burger/Controls/Controls";
@@ -14,7 +12,8 @@ import OrderModule from "../../components/UI/OrderModule/OrderModule";
 import Spinner from "../../components/UI/Spinner/Spinner";
 
 import { connect } from "react-redux";
-import { ADD, REMOVE } from "../../vars/constants";
+import { add, remove, init } from "../../store/actions/burger.js";
+import { orderInprogress } from "../../store/actions/order.js";
 
 class BurgerBuilder extends React.Component {
 	constructor(props) {
@@ -24,20 +23,9 @@ class BurgerBuilder extends React.Component {
 		};
 	}
 
-	// componentDidMount() {
-	// 	axios
-	// 		.get("https://burger-builder-cdf0a.firebaseio.com/ingredients.json")
-	// 		.then(response => {
-	// 			this.setState({
-	// 				ingredients: {
-	// 					bacon: response.data.bacon,
-	// 					salad: response.data.salad,
-	// 					cheese: response.data.cheese,
-	// 					meat: response.data.meat
-	// 				}
-	// 			});
-	// 		});
-	// }
+	componentDidMount() {
+		this.props.initIngredients();
+	}
 
 	getSnapshotBeforeUpdate() {
 		return document.body.offsetHeight;
@@ -68,13 +56,14 @@ class BurgerBuilder extends React.Component {
 
 	purchaseHandler = () => {
 		this.props.history.push("/checkout");
+		this.props.orderInprogress();
 	}; //move to Checkout page
 
 	render() {
 		const disabledInfo = { ...this.props.ingredients };
 		for (const key in disabledInfo) {
 			disabledInfo[key] = !disabledInfo[key];
-		} //if there is no ingredients to remove, we want to disable "-" button
+		} //if there are no ingredients to remove, we want to disable "-" button
 		let burger = (
 			<React.Fragment>
 				{" "}
@@ -89,6 +78,7 @@ class BurgerBuilder extends React.Component {
 				/>{" "}
 			</React.Fragment>
 		);
+
 		let order = (
 			<OrderModule price={this.props.price} checkOut={this.checkOutHandler} />
 		);
@@ -96,6 +86,16 @@ class BurgerBuilder extends React.Component {
 			burger = <Spinner />;
 			order = <Spinner />;
 		} //show spinner while fetching burger from backend
+
+		if (this.props.error) {
+			burger = (
+				<Modal show={this.props.error}>
+					Could not load ingredients! Please check your network connection.
+				</Modal>
+			);
+			order = null;
+		}
+
 		let orderSummary = (
 			<OrderSummary
 				isCheckingOut={this.state.checkingOut}
@@ -116,6 +116,7 @@ class BurgerBuilder extends React.Component {
 		} else if (!this.props.ingredients) {
 			orderSummary = null;
 		}
+
 		return (
 			<React.Fragment>
 				{burger} {order} {orderSummary}
@@ -126,15 +127,18 @@ class BurgerBuilder extends React.Component {
 
 const mapStateToProps = state => {
 	return {
-		ingredients: state.ingredients,
-		price: state.price
+		ingredients: state.burger.ingredients,
+		price: state.burger.price,
+		error: state.burger.hasError
 	};
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onAdd: ingredient => dispatch({ type: ADD, value: ingredient }),
-		onRemove: ingredient => dispatch({ type: REMOVE, value: ingredient })
+		onAdd: ingredient => dispatch(add(ingredient)),
+		onRemove: ingredient => dispatch(remove(ingredient)),
+		initIngredients: () => dispatch(init()),
+		orderInprogress: () => dispatch(orderInprogress())
 	};
 };
 
